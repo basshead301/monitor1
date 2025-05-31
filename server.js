@@ -23,6 +23,16 @@ let clients = new Set(); // To keep track of connected WebSocket clients
 app.use(cors()); // Enable CORS for all routes
 app.use(express.json()); // Parse JSON request bodies
 
+// >>> ADD THIS TEST ROUTE <<<
+app.get('/', (req, res) => {
+    console.log('Root path / was hit by a request.'); // For Render logs
+    res.send('Hello from Render! If you see this, the server.js root route is working.');
+});
+// >>> END TEST ROUTE <<<
+
+// --- Static File Serving ---
+app.use(express.static(__dirname)); 
+
 // --- Helper function to broadcast messages to all WebSocket clients ---
 function broadcast(data) {
     const jsonData = JSON.stringify(data);
