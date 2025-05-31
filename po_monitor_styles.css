@@ -1,0 +1,357 @@
+/* Import Segoe UI (or a close fallback) and a good monospace font */
+@import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&family=Roboto+Mono:wght@400&display=swap');
+
+:root {
+    /* Windows Dark Theme Inspired Palette */
+    --accent-color-blue: #0078d4; /* Standard Windows Accent Blue */
+    --accent-color-blue-hover: #106ebe;
+    --accent-color-blue-active: #005a9e;
+
+    --bg-base: #1f1f1f; /* Overall window background */
+    --bg-surface: #2b2b2b; /* Panels, sidebars, non-interactive surfaces */
+    --bg-element: #333333; /* Buttons, inputs before interaction */
+    --bg-element-hover: #3f3f3f;
+    --bg-element-active: #2a2a2a;
+    --bg-element-disabled: #252525;
+    
+    --border-color-light: #404040; /* Lighter borders for elements on dark bg */
+    --border-color-strong: #4d4d4d; /* Stronger borders for panel separation */
+    --border-focus: var(--accent-color-blue);
+    --border-color-subtle: #383838; /* For subtle borders like in lists */
+
+    --text-primary: #ffffff; /* Bright white for main text */
+    --text-secondary: #d2d2d2; /* Softer white for secondary text */
+    --text-placeholder: #8c8c8c;
+    --text-disabled: #6e6e6e;
+    --text-on-accent: #ffffff;
+    --danger-color: #f44336; /* Red for errors/alerts */
+
+    --font-ui: 'Segoe UI', 'Roboto', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'Roboto Mono', 'Fira Code', Consolas, monospace;
+
+    --radius-sharp: 2px; /* Windows UI often uses sharper corners */
+    --radius-normal: 4px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+    font-family: var(--font-ui);
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    margin: 0;
+    font-size: 14px; /* Typical for Windows UI */
+    line-height: 1.5;
+    height: 100vh;
+    display: flex;
+    flex-direction: column; /* Allow header, content, footer structure */
+    overflow: hidden; /* Prevent body scroll, individual panels will scroll */
+}
+
+.app-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+/* Main Content Area (below toolbar, above statusbar) */
+.main-content-area {
+    display: flex;
+    flex-grow: 1; /* Takes remaining vertical space */
+    overflow: hidden; /* Important for child scrolling */
+}
+
+/* Left Pane for Inputs/Controls */
+.left-pane {
+    width: 350px; /* Adjusted width for PO Monitor */
+    min-width: 320px;
+    background-color: var(--bg-surface);
+    padding: 20px;
+    border-right: 1px solid var(--border-color-strong);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Scroll if content exceeds height */
+}
+
+/* Right Pane for Results/Tables */
+.right-pane {
+    flex-grow: 1; /* Takes remaining horizontal space */
+    background-color: var(--bg-base); /* Same as body or slightly different */
+    padding: 15px 25px; /* Adjusted padding */
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Scroll if content exceeds height */
+}
+.right-pane-header {
+    margin-bottom: 15px;
+}
+.right-pane-header h2 {
+    margin: 0 0 10px 0;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+.results-toolbar {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color-light);
+}
+.results-toolbar button {
+    margin-right: 8px;
+}
+
+/* Table styling (basic) - Kept in case needed for future display modes */
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+.results-table th, .results-table td {
+    border: 1px solid var(--border-color-light);
+    padding: 8px 10px;
+    text-align: left;
+}
+.results-table th {
+    background-color: var(--bg-element);
+    color: var(--text-primary);
+    font-weight: 600;
+}
+.results-table tr:nth-child(even) {
+    background-color: var(--bg-surface);
+}
+.results-table tr:hover {
+    background-color: var(--bg-element-hover);
+}
+.results-table td .icon-button {
+    padding: 2px 4px;
+    font-size: 0.8rem;
+    margin-right: 5px;
+}
+
+/* Status Bar */
+.status-bar {
+    height: 28px;
+    background-color: var(--bg-element);
+    color: var(--text-secondary);
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    font-size: 0.8rem;
+    border-top: 1px solid var(--border-color-strong);
+    flex-shrink: 0; /* Prevent shrinking */
+}
+.status-bar-message {
+    flex-grow: 1;
+}
+.status-bar-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--border-color-light); 
+    border-top-color: var(--accent-color-blue);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 10px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Form Elements (Windows Dark Theme Style) */
+.form-group {
+    margin-bottom: 18px;
+}
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+input[type="text"],
+input[type="password"],
+input[type="email"], /* Added email type */
+select,
+input[type="date"],
+input[type="number"] { 
+    width: 100%;
+    padding: 8px 10px;
+    background-color: var(--bg-element);
+    border: 1px solid var(--border-color-light);
+    color: var(--text-primary);
+    border-radius: var(--radius-sharp);
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+input[type="text"]:hover,
+input[type="password"]:hover,
+input[type="email"]:hover,
+select:hover,
+input[type="date"]:hover,
+input[type="number"]:hover {
+    border-color: var(--border-color-strong);
+    background-color: var(--bg-element-hover);
+}
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+select:focus,
+input[type="date"]:focus,
+input[type="number"]:focus {
+    border-color: var(--border-focus);
+    background-color: var(--bg-base); /* Darken on focus, typical Windows */
+}
+input::placeholder { color: var(--text-placeholder); }
+input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.8); cursor: pointer; }
+input[type="checkbox"] { /* Basic styling for checkbox */
+    width: auto;
+    margin-right: 8px;
+    accent-color: var(--accent-color-blue);
+    vertical-align: middle;
+}
+input[type="checkbox"] + label {
+    display: inline; /* Keep label next to checkbox */
+    font-weight: normal;
+    color: var(--text-secondary);
+}
+
+
+select {
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23d2d2d2" width="18px" height="18px"%3E%3Cpath d="M7 10l5 5 5-5H7z"/%3E%3C/svg%3E');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 0.8em auto;
+    padding-right: 30px;
+}
+
+button, .button {
+    background-color: var(--bg-element);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color-light);
+    padding: 8px 15px;
+    border-radius: var(--radius-sharp);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: background-color 0.15s, border-color 0.15s;
+    text-align: center;
+    display: inline-flex; /* For icon alignment */
+    align-items: center;
+    justify-content: center;
+}
+button:hover, .button:hover {
+    background-color: var(--bg-element-hover);
+    border-color: var(--border-color-strong);
+}
+button:active, .button:active {
+    background-color: var(--bg-element-active);
+    border-color: var(--border-focus);
+}
+button:disabled, .button:disabled {
+    background-color: var(--bg-element-disabled);
+    color: var(--text-disabled);
+    border-color: var(--border-color-light);
+    cursor: not-allowed;
+}
+button.primary, .button.primary {
+    background-color: var(--accent-color-blue);
+    border-color: var(--accent-color-blue);
+    color: var(--text-on-accent);
+}
+button.primary:hover, .button.primary:hover {
+    background-color: var(--accent-color-blue-hover);
+    border-color: var(--accent-color-blue-hover);
+}
+button.primary:active, .button.primary:active {
+    background-color: var(--accent-color-blue-active);
+    border-color: var(--accent-color-blue-active);
+}
+button .icon, .button .icon {
+    width: 16px; height: 16px; margin-right: 8px; fill: currentColor;
+}
+
+/* Tab styles for left-pane - REMOVED as tabs are not used in PO Monitor only view */
+/* .tab-bar { ... } */
+/* .tab-button { ... } */
+/* .tab-button:hover { ... } */
+/* .tab-button.active { ... } */
+/* .tab-content { display: none; } */
+/* .tab-content.active { display: block; animation: fadeIn 0.3s; } */
+/* @keyframes fadeIn { from { opacity:0; } to { opacity:1; } } */
+
+/* Log panel specific styles */
+.log-panel {
+    font-family: var(--font-mono);
+    background-color: var(--bg-base);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color-light);
+    padding: 10px;
+    /* height: 150px; /* Smaller log panel */ /* Height is now set inline in HTML for PO Monitor specifically */
+    overflow-y: auto;
+    font-size: 0.8rem;
+    margin-top: 15px;
+    border-radius: var(--radius-sharp);
+}
+.log-panel div.log-entry-error { color: var(--danger-color); font-weight: bold;}
+.log-panel div.log-entry-warn { color: #ffc107; } /* Amber for warnings */
+.log-panel div.log-entry-debug { color: #9e9e9e; } /* Grey for debug */
+.log-panel div.log-entry-system { color: var(--accent-color-blue); font-style: italic; } /* Blue for system messages */
+
+
+/* Utility */
+.hidden { display: none !important; }
+
+/* PO Monitor Specific Styles from original HTML */
+.po-monitor-controls {
+    /* margin-top: 20px; */ /* Handled by surrounding layout */
+    /* padding-top: 15px; */ /* Handled by surrounding layout */
+    /* border-top: 1px solid var(--border-color-light); */ /* Removed as it's directly under other controls now */
+}
+.po-monitor-controls h5 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: var(--text-secondary);
+}
+.po-monitor-controls .form-group {
+    margin-bottom: 10px; /* Tighter spacing for monitor controls */
+}
+#poMonitorStatus {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: var(--radius-sharp);
+    font-weight: 600;
+    /* margin-left: 10px; */ /* Handled by flex layout in HTML */
+}
+#poMonitorStatus.status-active { background-color: #4caf50; color: white; } /* Green for active */
+#poMonitorStatus.status-inactive { background-color: #f44336; color: white; } /* Red for inactive */
+#poMonitorStatus.status-unknown, #poMonitorStatus.status-error { background-color: #757575; color: white; } /* Grey for unknown/error */
+
+/* Styles for monitor display in right-pane */
+#resultsTableContainer div {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    padding: 2px 5px;
+    border-bottom: 1px solid var(--border-color-subtle);
+}
+
+#resultsTableContainer div.monitor-alert-po-detail,
+#resultsTableContainer div.monitor-alert-email-sent {
+    font-weight: bold !important;
+    color: var(--danger-color) !important; /* Use var for consistency */
+    background-color: #fff0f0 !important; /* Light red background for alerts */
+}
+
+#resultsTableContainer div.monitor-display-system {
+    color: var(--accent-color-blue);
+    font-weight: bold;
+}
+
+#resultsTableContainer div.monitor-display-info {
+    color: var(--text-secondary);
+}
+
+#resultsTableContainer div.error {
+    color: var(--danger-color);
+    font-weight: bold;
+} 
