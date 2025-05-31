@@ -135,10 +135,34 @@ async function ensureBrowserAndLogin(params) {
     pwBrowser = null; pwContext = null; pwPage = null; bearerToken = null;
 
     try {
-        const launchOptions = { headless: true, slowMo: 50 }; 
-        // Playwright should use the browser installed by `npm install` (via postinstall script)
-        // No explicit executablePath needed unless overriding for a specific reason.
-        monitorLog('Launching Playwright browser...', 'debug');
+        let launchOptions = {
+            headless: true,
+            slowMo: 50,
+            args: ['--no-sandbox', '--disable-setuid-sandbox'] // Common args for CI/PaaS
+        };
+
+        const pwBrowsersDir = path.join(__dirname, 'pw-browsers');
+        if (fs.existsSync(pwBrowsersDir)) {
+            const items = fs.readdirSync(pwBrowsersDir);
+            // Find the main chromium directory (e.g., chromium-1169, not chromium_headless_shell-xxxx)
+            const chromeDirName = items.find(item => item.startsWith('chromium-') && !item.startsWith('chromium_headless_shell-'));
+
+            if (chromeDirName) {
+                const potentialExePath = path.join(pwBrowsersDir, chromeDirName, 'chrome-linux', 'chrome');
+                if (fs.existsSync(potentialExePath)) {
+                    launchOptions.executablePath = potentialExePath;
+                    monitorLog(`Using executablePath: ${potentialExePath}`, 'debug');
+                } else {
+                    monitorLog(`Chromium executable not found at: ${potentialExePath}. Will try default Playwright resolution.`, 'warn');
+                }
+            } else {
+                monitorLog(`Chromium directory (e.g., chromium-xxxx) not found in ${pwBrowsersDir}. Will try default Playwright resolution.`, 'warn');
+            }
+        } else {
+            monitorLog(`pw-browsers directory not found at ${pwBrowsersDir}. Will try default Playwright resolution.`, 'warn');
+        }
+        
+        monitorLog('Launching Playwright browser with options: ' + JSON.stringify(launchOptions), 'debug');
         pwBrowser = await chromium.launch(launchOptions);
         pwBrowser.on('disconnected', () => {
             monitorLog('Playwright browser disconnected event fired.', 'warn');
