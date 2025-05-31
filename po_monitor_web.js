@@ -2,8 +2,8 @@
 console.log("PO_Monitor_Web: Script loaded. Verifying DOM elements...");
 
 // --- Configuration ---
-const API_BASE_URL = 'http://localhost:3000/api/monitor'; // Base URL for your backend
-const WEBSOCKET_URL = 'ws://localhost:3000/api/monitor/updates'; // WebSocket URL
+const API_BASE_URL = 'https://monitor1-e2tx.onrender.com/api/monitor'; // Base URL for your backend
+const WEBSOCKET_URL = 'wss://monitor1-e2tx.onrender.com/api/monitor/updates'; // WebSocket URL
 
 // --- Get references to DOM elements ---
 const usernameEl = document.getElementById('username');
