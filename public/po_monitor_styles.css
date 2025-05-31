@@ -248,12 +248,7 @@ button:active, .button:active {
     background-color: var(--bg-element-active);
     border-color: var(--border-focus);
 }
-button:disabled, .button:disabled {
-    background-color: var(--bg-element-disabled);
-    color: var(--text-disabled);
-    border-color: var(--border-color-light);
-    cursor: not-allowed;
-}
+
 button.primary, .button.primary {
     background-color: var(--accent-color-blue);
     border-color: var(--accent-color-blue);
@@ -268,90 +263,96 @@ button.primary:active, .button.primary:active {
     border-color: var(--accent-color-blue-active);
 }
 button .icon, .button .icon {
-    width: 16px; height: 16px; margin-right: 8px; fill: currentColor;
+    width: 1em; /* Adjust as needed */
+    height: 1em;
+    margin-right: 8px;
+    fill: currentColor;
+}
+button:disabled, .button:disabled {
+    background-color: var(--bg-element-disabled);
+    border-color: var(--border-color-light);
+    color: var(--text-disabled);
+    cursor: not-allowed;
 }
 
-/* Tab styles for left-pane - REMOVED as tabs are not used in PO Monitor only view */
-/* .tab-bar { ... } */
-/* .tab-button { ... } */
-/* .tab-button:hover { ... } */
-/* .tab-button.active { ... } */
-/* .tab-content { display: none; } */
-/* .tab-content.active { display: block; animation: fadeIn 0.3s; } */
-/* @keyframes fadeIn { from { opacity:0; } to { opacity:1; } } */
-
-/* Log panel specific styles */
+/* Log Panel Specific Styling */
 .log-panel {
-    font-family: var(--font-mono);
     background-color: var(--bg-base);
-    color: var(--text-secondary);
     border: 1px solid var(--border-color-light);
     padding: 10px;
-    /* height: 150px; /* Smaller log panel */ /* Height is now set inline in HTML for PO Monitor specifically */
-    overflow-y: auto;
+    font-family: var(--font-mono);
     font-size: 0.8rem;
-    margin-top: 15px;
+    color: var(--text-secondary);
+    overflow-y: auto;
+    max-height: 400px; /* Example max height, adjust as needed */
     border-radius: var(--radius-sharp);
+    line-height: 1.6;
 }
+.log-panel div { margin-bottom: 4px; word-break: break-all; }
 .log-panel div.log-entry-error { color: var(--danger-color); font-weight: bold;}
 .log-panel div.log-entry-warn { color: #ffc107; } /* Amber for warnings */
 .log-panel div.log-entry-debug { color: #9e9e9e; } /* Grey for debug */
 .log-panel div.log-entry-system { color: var(--accent-color-blue); font-style: italic; } /* Blue for system messages */
 
 
-/* Utility */
+/* Hide elements */
 .hidden { display: none !important; }
 
-/* PO Monitor Specific Styles from original HTML */
+/* PO Monitor Specific UI Elements */
 .po-monitor-controls {
-    /* margin-top: 20px; */ /* Handled by surrounding layout */
-    /* padding-top: 15px; */ /* Handled by surrounding layout */
-    /* border-top: 1px solid var(--border-color-light); */ /* Removed as it's directly under other controls now */
+    /* margin-top: 20px; */ /* Handled by hr */
+    /* padding-top: 20px; */ /* Handled by hr */
+    /* border-top: 1px solid var(--border-color-subtle); */
 }
 .po-monitor-controls h5 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    color: var(--text-secondary);
+    margin-top: 0; 
+    margin-bottom: 15px;
+    color: var(--text-primary);
 }
 .po-monitor-controls .form-group {
-    margin-bottom: 10px; /* Tighter spacing for monitor controls */
+    margin-bottom: 12px; /* Tighter spacing within this block */
 }
 #poMonitorStatus {
-    display: inline-block;
-    padding: 4px 8px;
-    border-radius: var(--radius-sharp);
-    font-weight: 600;
-    /* margin-left: 10px; */ /* Handled by flex layout in HTML */
+    border-radius: var(--radius-normal);
+    font-weight: normal;
+    transition: background-color 0.3s, color 0.3s;
+    /* text-transform: uppercase; */
+    font-size: 0.75rem !important; /* Override general if needed, ensure this applies */
 }
 #poMonitorStatus.status-active { background-color: #4caf50; color: white; } /* Green for active */
 #poMonitorStatus.status-inactive { background-color: #f44336; color: white; } /* Red for inactive */
 #poMonitorStatus.status-unknown, #poMonitorStatus.status-error { background-color: #757575; color: white; } /* Grey for unknown/error */
 
-/* Styles for monitor display in right-pane */
+/* Styling for messages within resultsTableContainer */
 #resultsTableContainer div {
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    padding: 2px 5px;
-    border-bottom: 1px solid var(--border-color-subtle);
+    padding: 8px 10px;
+    margin-bottom: 5px;
+    border-radius: var(--radius-sharp);
+    background-color: var(--bg-surface);
+    border-left: 3px solid var(--border-color-light);
 }
-
 #resultsTableContainer div.monitor-alert-po-detail,
 #resultsTableContainer div.monitor-alert-email-sent {
-    font-weight: bold !important;
-    color: var(--danger-color) !important; /* Use var for consistency */
-    background-color: #fff0f0 !important; /* Light red background for alerts */
-}
-
-#resultsTableContainer div.monitor-display-system {
-    color: var(--accent-color-blue);
+    background-color: #5d3b3b; /* Darker red shade */
+    color: #ffcdd2; /* Lighter red text */
+    border-left-color: var(--danger-color);
     font-weight: bold;
 }
-
+#resultsTableContainer div.monitor-display-system {
+    background-color: #2c3e50; /* Dark blue shade */
+    color: #bdc3c7; /* Lighter blue-grey text */
+    border-left-color: var(--accent-color-blue);
+    font-style: italic;
+}
 #resultsTableContainer div.monitor-display-info {
+    background-color: var(--bg-surface);
     color: var(--text-secondary);
+    border-left-color: #7f8c8d; /* Grey */
 }
 
 #resultsTableContainer div.error {
-    color: var(--danger-color);
+    background-color: #5d3b3b; /* Darker red shade */
+    color: #ffcdd2; /* Lighter red text */
+    border-left-color: var(--danger-color);
     font-weight: bold;
 } 
