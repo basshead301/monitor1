@@ -119,3 +119,4 @@
         playwright-report/
         test-results/
         playwright/.cache/
+        pw-browsers/
